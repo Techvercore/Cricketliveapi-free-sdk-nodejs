@@ -1,0 +1,38 @@
+{
+  "name": "cricketliveapi",
+  "version": "1.0.0",
+  "description": "Official CricketLiveAPI Node.js SDK. Live scores, scorecards, commentary, fantasy points, rankings, and webhooks.",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "example:live": "node examples/live-matches.js",
+    "example:upcoming": "node examples/upcoming-matches.js",
+    "example:match": "node examples/match-details.js",
+    "example:results": "node examples/match-results.js"
+  },
+  "keywords": [
+    "cricket",
+    "cricket-api",
+    "cricketliveapi",
+    "live-score",
+    "nodejs",
+    "fantasy-cricket"
+  ],
+  "author": "Techwarezen Private Limited",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Techwarezen/cricketliveapi-nodejs-sdk.git"
+  },
+  "homepage": "https://cricketliveapi.com",
+  "bugs": {
+    "url": "https://github.com/Techwarezen/cricketliveapi-nodejs-sdk/issues"
+  }
+}
