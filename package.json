@@ -1,5 +1,8 @@
 {
-  "name": "cricketliveapi",
+  "name": "@techvercore/cricketliveapi",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "version": "1.0.0",
   "description": "Official CricketLiveAPI Node.js SDK. Live scores, scorecards, commentary, fantasy points, rankings, and webhooks.",
   "main": "src/index.js",

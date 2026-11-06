@@ -19,8 +19,17 @@ Developed and maintained by [Techwarezen Private Limited](https://techwarezen.co
 ## Installation
 
 ```bash
-npm install cricketliveapi
+npm install @techvercore/cricketliveapi
 ```
+
+GitHub Packages needs this in the project `.npmrc` before install:
+
+```text
+@techvercore:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+`NODE_AUTH_TOKEN` is a GitHub token with `read:packages`. Do not commit the token.
 
 The npm package is MIT and free. CricketLiveAPI itself needs an API key from [cricketliveapi.com](https://cricketliveapi.com). Calls count against your plan.
 
