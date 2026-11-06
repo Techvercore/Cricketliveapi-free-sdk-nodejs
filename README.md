@@ -22,6 +22,8 @@ Developed and maintained by [Techwarezen Private Limited](https://techwarezen.co
 npm install cricketliveapi
 ```
 
+The npm package is MIT and free. CricketLiveAPI itself needs an API key from [cricketliveapi.com](https://cricketliveapi.com). Calls count against your plan.
+
 The package is ready to publish. This repository does not publish it for you.
 
 Node.js 18 or newer is required.
@@ -90,23 +92,21 @@ A successful JSON body looks like:
 ```json
 {
   "success": true,
-  "data": [
-    {
-      "match_id": 177701,
-      "series_id": 13430,
-      "series_name": "Nepal Premier League 2026",
-      "match_desc": "14th Match",
-      "format": "T20",
-      "state": "Complete",
-      "status": "Lumbini Lions won by 16 runs",
-      "first_team": { "name": "Lumbini Lions", "team_image_url": "https://cricketliveapi.com/images/team_images/1.jpg" },
-      "second_team": { "name": "Janakpur Bolts" }
-    }
-  ]
+  "data": {
+    "matches": [
+      {
+        "match_id": 173060,
+        "series_name": "India tour of England, 2026",
+        "first_team": { "name": "India", "score": "287/6 (50 Ov)" },
+        "second_team": { "name": "England", "score": "214/4 (38.2 Ov)" },
+        "status": "England need 74 runs from 70 balls"
+      }
+    ]
+  }
 }
 ```
 
-`data` is the match array for live, recent, and upcoming. Each team object includes `team_image_url` when an image id exists. The sample above is the verified response shape; scores and names change with the match.
+Live match objects also include `team_image_url` on each team when an image id is available.
 
 ## Available API endpoints
 
@@ -268,7 +268,7 @@ CricketLiveAPI POSTs JSON to your URL. Verify the signature with the secret you 
       "team_id": "776162",
       "team_name": "India",
       "team_short": "IND",
-      "team_image_url": "https://cricketliveapi.com/images/team_images/776162.jpg"
+      "team_image_url": ""
     },
     "score": "241/10",
     "curr_score": "241/10",
@@ -289,6 +289,305 @@ function isValidWebhook(rawBody, signatureHeader, secret) {
 ```
 
 Confirm the header name in [the webhook section of the API docs](https://cricketliveapi.com/api-docs) before you lock the check. The body fields above match the current score-change payload.
+
+## Verified responses
+
+These samples were returned by the live API through this SDK. Arrays are cut to the first item. Names, scores, and counts change every match.
+
+### Live matches — `getLiveMatches()`
+
+```json
+{
+  "success": true,
+  "type": "live",
+  "count": 5,
+  "data": [
+    {
+      "match_id": 173060,
+      "series_id": 13211,
+      "series_name": "West Indies tour of Bangladesh, 2026",
+      "match_desc": "2nd Test",
+      "format": "TEST",
+      "venue": "Sylhet International Cricket Stadium, Sylhet"
+    }
+  ]
+}
+```
+
+### Recent matches — `getRecentMatches()`
+
+```json
+{
+  "success": true,
+  "type": "recent",
+  "count": 94,
+  "data": [
+    {
+      "match_id": 177701,
+      "series_name": "Nepal Premier League 2026",
+      "match_desc": "14th Match",
+      "format": "T20",
+      "state": "Complete",
+      "status": "Lumbini Lions won by 16 runs"
+    }
+  ]
+}
+```
+
+### Upcoming matches — `getUpcomingMatches()`
+
+```json
+{
+  "success": true,
+  "type": "upcoming",
+  "count": 44,
+  "data": [
+    {
+      "match_id": 173060,
+      "series_name": "West Indies tour of Bangladesh, 2026",
+      "match_desc": "2nd Test",
+      "match_format": "TEST",
+      "state": "upcoming",
+      "first_team": { "id": 776191, "name": "West Indies", "short_name": "WI", "team_image_url": "" },
+      "second_team": { "id": 776210, "name": "Bangladesh", "short_name": "BAN", "team_image_url": "" }
+    }
+  ]
+}
+```
+
+### Scorecard — `getScorecard(177701)`
+
+```json
+{
+  "success": true,
+  "data": {
+    "match_id": 177701,
+    "innings": [
+      {
+        "bat_team": "Lumbini Lions",
+        "bat_team_short": "LUL",
+        "bowl_team": "Janakpur Bolts",
+        "score": "149/8 (20 ov)",
+        "run_rate": 7.45,
+        "batsmen": [
+          { "player_id": 11050, "name": "D Arcy Short", "runs": 0, "balls": 1, "out_desc": "c Rahul Yadav b Lalit Rajbanshi" }
+        ],
+        "bowlers": [
+          { "player_id": 13626, "name": "Lalit Rajbanshi", "overs": 4, "runs": 31, "wickets": 1, "economy": 7.8 }
+        ],
+        "extras_detail": { "total": 5, "byes": 1, "leg_byes": 1, "wides": 3, "no_balls": 0 },
+        "fall_of_wickets": [{ "wkt_num": 1, "player": "D Arcy Short", "runs": 0, "over": 0.1 }]
+      }
+    ]
+  }
+}
+```
+
+### Commentary — `getCommentary(177701)`
+
+```json
+{
+  "success": true,
+  "data": {
+    "match_id": 177701,
+    "miniscore": {
+      "bat_team_score": 133,
+      "bat_team_wickets": 8,
+      "overs": 20,
+      "target": 150,
+      "status": "Lumbini Lions won by 16 runs"
+    },
+    "commentary": [
+      { "text": "Result - Lumbini Lions won by 16 runs", "innings_id": 2 }
+    ]
+  }
+}
+```
+
+### Squads — `getSquads(177701)`
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "team_id": 2918,
+      "team_name": "Janakpur Bolts",
+      "team_short": "JAB",
+      "playing_xi": [
+        {
+          "id": 15273,
+          "name": "Parvez Hossain Emon",
+          "role": "WK-Batter",
+          "image_id": "616459",
+          "player_image_url": "https://cricketliveapi.com/api/v1/player-image/616459/parvez-hossain-emon"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Highlights — `getHighlights(177701)`
+
+```json
+{
+  "success": true,
+  "data": {
+    "total": 28,
+    "highlights": [
+      {
+        "over": 19.6,
+        "event": "over-break,WICKET",
+        "bat_team": "LUL",
+        "batsman": "Ruben Trumpelmann",
+        "bowler": "Lalit Rajbanshi",
+        "text": "Lalit Rajbanshi to Ruben Trumpelmann, out Ruben Trumpelmann Run Out!!"
+      }
+    ]
+  }
+}
+```
+
+### Graphs — `getGraphs(177701)`
+
+```json
+{
+  "success": true,
+  "data": {
+    "matchId": 177701,
+    "team1Name": "LUL",
+    "team2Name": "JAB",
+    "runsChartData": [{ "over": 0, "team1": 0, "team2": 0, "tooltipText": "Over 0 | LUL: 0 • JAB: 0" }],
+    "runRateChartData": [{ "over": 0, "team1": 0, "team2": 0 }],
+    "runsPerOverData": [{ "over": 1, "team1": 3, "team2": 6, "isTeam1Wicket": true }],
+    "winProbability": { "1": [{ "over": 0, "team1": 50, "team2": 50 }] }
+  }
+}
+```
+
+### Match facts — `getMatchFacts(177701)`
+
+```json
+{
+  "success": true,
+  "data": {
+    "match_id": 177701,
+    "toss": "Janakpur Bolts won the toss and opt to Bowl",
+    "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+    "umpires": "",
+    "referee": "",
+    "venue_details": { "ground": "Tribhuvan University International Cricket Ground", "city": "Kirtipur", "timezone": "+05:45" }
+  }
+}
+```
+
+### Schedule — `getSchedule("all")`
+
+```json
+{
+  "success": true,
+  "category": "all",
+  "total": 133,
+  "data": [
+    {
+      "date": "FRI, NOV 06 2026",
+      "series": [
+        {
+          "series_id": 13211,
+          "series_name": "West Indies tour of Bangladesh, 2026",
+          "matches": [
+            { "match_id": 173060, "match_desc": "2nd Test, Day 2", "team1": "Bangladesh", "team2": "West Indies" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Series list — `getSeries("international")`
+
+```json
+{
+  "success": true,
+  "data": {
+    "category": "international",
+    "total": 22,
+    "months": [
+      {
+        "month": "FEBRUARY 2024",
+        "series": [
+          { "id": 7572, "name": "ICC Cricket World Cup League Two 2023-27", "start_date": "2024-02-15", "end_date": "2027-12-29" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Teams — `getTeams("international")`
+
+```json
+{
+  "success": true,
+  "data": {
+    "total": 38,
+    "teams": [
+      { "id": 2, "name": "India", "short_name": "IND", "country": "India", "image_url": "" }
+    ]
+  }
+}
+```
+
+### Player profile — `getPlayerProfile(15273)`
+
+```json
+{
+  "success": true,
+  "player_id": 15273,
+  "data": {
+    "id": 15273,
+    "name": "Parvez Hossain Emon",
+    "bio": { "Born": "June 12, 2002 (24 years)", "Role": "WK-Batsman", "Batting Style": "Left Handed Bat" },
+    "batting_form": [{ "score": "70(96)", "oppn": "AFG", "format": "ODI", "date": "21 Oct 26" }],
+    "career_timeline": [{ "format": "T20", "debut": "vs Zimbabwe, 2022-08-02", "last": "vs Sri Lanka, 2026-10-03" }]
+  }
+}
+```
+
+### Player image — `getPlayerImage(616459)`
+
+Returns a `Buffer`, not JSON. The live call returned `1128` bytes. Build the URL without downloading:
+
+```javascript
+api.playerImageUrl(616459, "parvez-hossain-emon");
+// https://cricketliveapi.com/api/v1/player-image/616459/parvez-hossain-emon
+```
+
+### ICC rankings — `getIccRankings("batting", "odi")`
+
+```json
+{
+  "success": true,
+  "category": "batting",
+  "format": "odi",
+  "count": 15,
+  "data": {
+    "rankings": [
+      { "rank": "1", "id": "11808", "name": "Shubman Gill", "country": "India", "rating": "841", "faceImageId": "616515" }
+    ]
+  }
+}
+```
+
+### Webhook list — `listWebhooks()`
+
+```json
+{ "success": true, "data": [] }
+```
+
+An empty `data` array means this account has no webhooks yet. `registerWebhook()` was not called during the test, so no endpoint was created.
 
 ## Parameters and responses
 
