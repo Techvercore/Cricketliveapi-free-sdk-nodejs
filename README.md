@@ -662,7 +662,7 @@ The token is authenticated, but the account has no active subscription.
 ## Support and contact
 
 - Email: support@cricketliveapi.com
-- Issues: [github.com/Techwarezen/cricketliveapi-nodejs-sdk/issues](https://github.com/Techwarezen/cricketliveapi-nodejs-sdk/issues)
+- Issues: [github.com/Techvercore/Cricketliveapi-free-sdk-nodejs/issues](https://github.com/Techvercore/Cricketliveapi-free-sdk-nodejs/issues)
 
 ## License
 

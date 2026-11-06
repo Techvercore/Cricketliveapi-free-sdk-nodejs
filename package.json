@@ -29,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Techwarezen/cricketliveapi-nodejs-sdk.git"
+    "url": "git+https://github.com/Techvercore/Cricketliveapi-free-sdk-nodejs.git"
   },
   "homepage": "https://cricketliveapi.com",
   "bugs": {
-    "url": "https://github.com/Techwarezen/cricketliveapi-nodejs-sdk/issues"
+    "url": "https://github.com/Techvercore/Cricketliveapi-free-sdk-nodejs/issues"
   }
 }
